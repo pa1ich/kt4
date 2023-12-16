@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 from IPython.display import display
+import matplotlib.pyplot as plt
+from pathlib import Path
 
 data=pd.read_excel("https://raw.githubusercontent.com/junaart/ForStudents/master/Big_Data/Seminar_3/demo26.xlsx",sheet_name="ОПЖ")
 display(data)
@@ -16,7 +18,7 @@ mean_second = new['SECOND'].mean()
 new = new[new['SECOND'] > mean_second]
 even_years = new.index % 2 == 0
 print(new[even_years])
-import matplotlib.pyplot as plt
+
 plt.plot(new.index, new['THIRD'])
 plt.xlabel('Год')
 plt.ylabel('Третий столбец')
@@ -25,3 +27,8 @@ median_third = new['THIRD'].median()
 median_fourth = new['FOURTH'].median()
 new['NEW'] = np.where((new['THIRD'] > median_third) & (new['FOURTH'] > median_fourth), 'good', 'bad')
 display(data)
+
+
+filepath = Path('./out.csv')
+filepath.parent.mkdir(parents=True, exist_ok=True)
+new.to_csv(filepath)
